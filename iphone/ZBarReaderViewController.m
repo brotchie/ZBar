@@ -117,7 +117,7 @@ AVSessionPresetForUIVideoQuality (UIImagePickerControllerQualityType quality)
 @synthesize scanner, readerDelegate, showsZBarControls,
     supportedOrientationsMask, tracksSymbols, enableCache, cameraOverlayView,
     cameraViewTransform, cameraDevice, cameraFlashMode, videoQuality,
-    readerView, scanCrop;
+readerView, scanCrop, readerControllerDelegate;
 @dynamic sourceType, allowsEditing, allowsImageEditing, showsCameraControls,
     showsHelpOnFail, cameraMode, takesPicture, maxScanDimension;
 
@@ -281,19 +281,21 @@ AVSessionPresetForUIVideoQuality (UIImagePickerControllerQualityType quality)
 
     toolbar.items =
         [NSArray arrayWithObjects:
-            [[[UIBarButtonItem alloc]
+            /*[[[UIBarButtonItem alloc]
                  initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                  target: self
                  action: @selector(cancel)]
-                autorelease],
+                autorelease],*/
             [[[UIBarButtonItem alloc]
                  initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace
                  target: nil
                  action: nil]
                 autorelease],
             [[[UIBarButtonItem alloc]
+              initWithTitle:@"Help, I can't scan!" style:UIBarButtonItemStyleBordered target:self action:@selector(info)] autorelease]
+            /*[[[UIBarButtonItem alloc]
                  initWithCustomView: info]
-                autorelease],
+                autorelease]*/,
             nil];
     [controls addSubview: toolbar];
     [toolbar release];
@@ -555,9 +557,11 @@ AVSessionPresetForUIVideoQuality (UIImagePickerControllerQualityType quality)
 
 - (void) showHelpWithReason: (NSString*) reason
 {
-    if(helpController)
-        return;
-    helpController = [[ZBarHelpController alloc]
+    [self.readerControllerDelegate didPressHelpButton];
+    /*if(helpController)
+        return;*/
+    
+/*    helpController = [[ZBarHelpController alloc]
                          initWithReason: reason];
     helpController.delegate = (id<ZBarHelpDelegate>)self;
     helpController.wantsFullScreenLayout = YES;
@@ -569,7 +573,7 @@ AVSessionPresetForUIVideoQuality (UIImagePickerControllerQualityType quality)
     [UIView beginAnimations: @"ZBarHelp"
             context: nil];
     helpController.view.alpha = 1;
-    [UIView commitAnimations];
+    [UIView commitAnimations];*/
 }
 
 - (void) takePicture

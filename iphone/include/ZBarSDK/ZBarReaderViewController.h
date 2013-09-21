@@ -40,6 +40,12 @@
 // Automatically falls back to a ZBarReaderController if video APIs
 // are unavailable (eg for OS < 4.0)
 
+@class ZBarReaderViewController;
+
+@protocol ZBarReaderViewControllerDelegate <NSObject>
+- (void)didPressHelpButton;
+@end
+
 @interface ZBarReaderViewController
     : UIViewController
 {
@@ -91,6 +97,8 @@
 
 // transform applied to the preview image.
 @property (nonatomic) CGAffineTransform cameraViewTransform;
+
+@property (nonatomic) id<ZBarReaderViewControllerDelegate> readerControllerDelegate;
 
 // display the built-in help browser.  the argument will be passed to
 // the onZBarHelp() javascript function.
